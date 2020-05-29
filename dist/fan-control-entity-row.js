@@ -44,6 +44,12 @@ class CustomFanRow extends Polymer.Element {
                         toggles name="high"
                         on-click='setSpeed'
                         disabled='[[_isOnHigh]]'>HIGH</button>
+                    <button
+			class='speed'
+                        style='[[_fullOnColor]]'
+                        toggles name="on"
+                        on-click='setSpeed'
+                        disabled='[[_isOnFull]]'>FULL</button>
 		    <button
 			class='speed'
                         style='[[_offColor]]'
@@ -63,15 +69,17 @@ class CustomFanRow extends Polymer.Element {
             },
                 _config: Object,
                 _stateObj: Object,
-				_lowOnColor: String,
-				_medOnColor: String,
+		_lowOnColor: String,
+		_medOnColor: String,
 				_highOnColor: String,
+				_fullOnColor: String,
 				_offColor: String,
 				_isOffState: Boolean,
             	_isOnState: Boolean,
             	_isOnLow: Boolean,
-				_isOnMed: Boolean,
+		_isOnMed: Boolean,
             	_isOnHigh: Boolean,
+            	_isOnFull: Boolean,
 		}
     }
 
@@ -85,6 +93,7 @@ class CustomFanRow extends Polymer.Element {
 			customIsOnLowColor: '#43A047',
 			customIsOnMedColor: '#43A047',
 			customIsOnHiColor: '#43A047',
+			customIsOnFullColor: '#43A047',
 			customIsOffSpdColor: '#759aaa',
             ...config
         };
@@ -99,6 +108,7 @@ class CustomFanRow extends Polymer.Element {
 		const custOnLowClr = config.customIsOnLowColor;
 		const custOnMedClr = config.customIsOnMedColor;
 		const custOnHiClr = config.customIsOnHiColor;
+		const custOnFullClr = config.customIsOnHiColor;
 		const custOffSpdClr = config.customIsOffSpdColor;
 		const custOffClr = config.customIsOffColor;
 		
@@ -112,15 +122,18 @@ class CustomFanRow extends Polymer.Element {
 	let low;
 	let med;
 	let high;
+	let full;
 	let offstate;
 		
 	if (stateObj && stateObj.attributes) {
-	    if (stateObj.state == 'on' && stateObj.attributes.speed == 'low') {
+	    if (stateObj.attributes.speed == 'low') {
 		    low = 'on';
-	    } else if (stateObj.state == 'on' && stateObj.attributes.speed == 'medium') {
+	    } else if (stateObj.attributes.speed == 'medium') {
 		    med = 'on';
-	    } else if (stateObj.state == 'on' && stateObj.attributes.speed == 'high') {
+	    } else if (stateObj.attributes.speed == 'high') {
 		    high = 'on';
+	    } else if (stateObj.attributes.speed == 'full') {
+		    full = 'on';
 	    } else {
 			offstate = 'on';
 		}
@@ -129,6 +142,7 @@ class CustomFanRow extends Polymer.Element {
     let lowcolor;
 	let medcolor;
 	let hicolor;
+	let fullcolor;
 	let offcolor;
 				
 	if (custTheme) {
@@ -149,6 +163,12 @@ class CustomFanRow extends Polymer.Element {
 			hicolor = 'background-color:'  + custOnHiClr;
 		} else {
 			hicolor = 'background-color:' + custOffSpdClr;
+		}
+		
+		if (full == 'on') {
+			fullcolor = 'background-color:'  + custOnFullClr;
+		} else {
+			fullcolor = 'background-color:' + custOffSpdClr;
 		}
 		
 		if (offstate == 'on') {
@@ -177,6 +197,12 @@ class CustomFanRow extends Polymer.Element {
 			hicolor = 'background-color: var(--disabled-text-color)';
 		}
 		
+		if (full == 'on') {
+			fullcolor = 'background-color: var(--primary-color)';
+		} else {
+			fullcolor = 'background-color: var(--disabled-text-color)';
+		}
+		
 		if (offstate == 'on') {
 			offcolor = 'background-color: var(--primary-color)';
 		} else {
@@ -191,9 +217,11 @@ class CustomFanRow extends Polymer.Element {
         _isOnLow: low === 'on',
 		_isOnMed: med === 'on',
 		_isOnHigh: high === 'on',
+		_isOnFull: full === 'on',
 		_lowOnColor: lowcolor,
 		_medOnColor: medcolor,
 		_highOnColor: hicolor,
+		_fullOnColor: fullcolor,
 		_offColor: offcolor,
 	});
     }
