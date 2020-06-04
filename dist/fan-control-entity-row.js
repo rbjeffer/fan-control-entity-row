@@ -9,7 +9,7 @@ class CustomFanRow extends Polymer.Element {
 				}
                 .speed {
                     min-width: 30px;
-		    max-width: 30px;
+		    max-width: 45px;
 		    height: 30px;
 		    margin-left: 2px;
                     margin-right: 2px;
@@ -37,19 +37,25 @@ class CustomFanRow extends Polymer.Element {
                         style='[[_medOnColor]]'
                         toggles name="medium"
                         on-click='setSpeed'
-                        disabled='[[_isOnMed]]'>MED</button>
+                        disabled='[[_isOnMed]]'>MEDLO</button>
                     <button
 			class='speed'
                         style='[[_highOnColor]]'
                         toggles name="high"
                         on-click='setSpeed'
-                        disabled='[[_isOnHigh]]'>HIGH</button>
+                        disabled='[[_isOnHigh]]'>MEDHI</button>
                     <button
 			class='speed'
                         style='[[_fullOnColor]]'
                         toggles name="on"
                         on-click='setSpeed'
-                        disabled='[[_isOnFull]]'>FULL</button>
+                        disabled='[[_isOnFull]]'>HIGH</button>
+                    <button
+			class='speed'
+                        style='[[_smartOnColor]]'
+                        toggles name="smart"
+                        on-click='setSpeed'
+                        disabled='[[_isOnSmart]]'>BREEZE</button>
 		    <button
 			class='speed'
                         style='[[_offColor]]'
@@ -73,12 +79,14 @@ class CustomFanRow extends Polymer.Element {
 		_medOnColor: String,
 				_highOnColor: String,
 				_fullOnColor: String,
+				_smartOnColor: String,
 				_offColor: String,
 				_isOffState: Boolean,
             	_isOnState: Boolean,
             	_isOnLow: Boolean,
 		_isOnMed: Boolean,
             	_isOnHigh: Boolean,
+            	_isOnSmart: Boolean,
             	_isOnFull: Boolean,
 		}
     }
@@ -94,6 +102,7 @@ class CustomFanRow extends Polymer.Element {
 			customIsOnMedColor: '#43A047',
 			customIsOnHiColor: '#43A047',
 			customIsOnFullColor: '#43A047',
+			customIsOnSmartColor: '#43A047',
 			customIsOffSpdColor: '#759aaa',
             ...config
         };
@@ -109,6 +118,7 @@ class CustomFanRow extends Polymer.Element {
 		const custOnMedClr = config.customIsOnMedColor;
 		const custOnHiClr = config.customIsOnHiColor;
 		const custOnFullClr = config.customIsOnHiColor;
+		const custOnSmartClr = config.customIsOnSmartColor;
 		const custOffSpdClr = config.customIsOffSpdColor;
 		const custOffClr = config.customIsOffColor;
 		
@@ -123,6 +133,7 @@ class CustomFanRow extends Polymer.Element {
 	let med;
 	let high;
 	let full;
+	let smart;
 	let offstate;
 		
 	if (stateObj && stateObj.attributes) {
@@ -134,6 +145,8 @@ class CustomFanRow extends Polymer.Element {
 		    high = 'on';
 	    } else if (stateObj.attributes.speed == 'full') {
 		    full = 'on';
+	    } else if (stateObj.attributes.speed == 'smart') {
+		    smart = 'on';
 	    } else {
 			offstate = 'on';
 		}
@@ -143,6 +156,7 @@ class CustomFanRow extends Polymer.Element {
 	let medcolor;
 	let hicolor;
 	let fullcolor;
+	let smartcolor;
 	let offcolor;
 				
 	if (custTheme) {
@@ -169,6 +183,12 @@ class CustomFanRow extends Polymer.Element {
 			fullcolor = 'background-color:'  + custOnFullClr;
 		} else {
 			fullcolor = 'background-color:' + custOffSpdClr;
+		}
+		
+		if (smart == 'on') {
+			smartcolor = 'background-color:'  + custOnSmartClr;
+		} else {
+			smartcolor = 'background-color:' + custOffSpdClr;
 		}
 		
 		if (offstate == 'on') {
@@ -203,6 +223,12 @@ class CustomFanRow extends Polymer.Element {
 			fullcolor = 'background-color: var(--disabled-text-color)';
 		}
 		
+		if (smart == 'on') {
+			smartcolor = 'background-color: var(--primary-color)';
+		} else {
+			smartcolor = 'background-color: var(--disabled-text-color)';
+		}
+		
 		if (offstate == 'on') {
 			offcolor = 'background-color: var(--primary-color)';
 		} else {
@@ -222,6 +248,7 @@ class CustomFanRow extends Polymer.Element {
 		_medOnColor: medcolor,
 		_highOnColor: hicolor,
 		_fullOnColor: fullcolor,
+		_smartOnColor: smartcolor,
 		_offColor: offcolor,
 	});
     }
